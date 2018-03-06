@@ -79,4 +79,18 @@
  * Do we print each stage or at the end? if at the end, how do we keep all info 
  * 
  * What do we need to use the parsing for?
- * /
+ */
+
+int main () {
+    int s_num = 0;
+}
+
+int printStage (int stage_num, char *line, char *input, char *output, int num_args, char *arg_list) {
+    printf("--------\n");
+    printf("Stage %d: \"%s\"\n", stage_num, line);
+    printf("--------\n");
+    printf("     input: \n");
+    printf("    output: \n");
+    printf("      argc: %d\n", num_args);
+    printf("      argv: \n");
+}
