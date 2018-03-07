@@ -8,11 +8,8 @@ void get_input(char *input) {
 
    printf("line: ");
 
-   if (fgets(input, MAX_IN + 1, stdin) == NULL) {
-      printf("invalid null command\n");
-      exit(EXIT_FAILURE);
-   }
-
+   fgets(input, MAX_IN + 1, stdin);
+ 
    if (input[MAX_IN] != '\0') {
       printf("command too long\n");
       exit(EXIT_FAILURE);
