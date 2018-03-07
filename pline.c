@@ -103,8 +103,8 @@ int main (int argc, char *argv[]) {
     char *input;
     char *output;
     int num_args;
-    char *arguments[10];
-    stage_stats *stage_list[10];
+    char *arguments[10] = {NULL};
+    stage_stats *stage_list[10] = {NULL};
     int i;
     int j;
     int struct_index;
@@ -240,7 +240,7 @@ stage_stats *createStage(char *input, char *output, int num_args, char **arg_lis
     new_stage->output_line = output;
     new_stage->num_args = num_args;
     new_stage->arg_list = arg_list;
-    return new_stage; 
+    return new_stage;
 }
 
 /*

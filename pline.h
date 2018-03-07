@@ -12,7 +12,7 @@ struct stage {
     char *input_line;
     char *output_line;
     int num_args;
-    const char *arg_list[];
+    char **arg_list;
 };
 
 stage_stats *createStage(char *input, char *output, int num_args, char *arg_list[]);
