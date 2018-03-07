@@ -12,12 +12,35 @@ void print(stage_stats **stats) {
 
 void print_stats(int i, stage_stats *stg) {
    int k = 0;
+   int j = 0;
+   char *line;
+
+   while (j < i) {
+      if (!(*stg->c_line[j] == '|' || *stg->c_line[j] == '<' ||
+          *stg->c_line[j] == '>')) {
+         line = stg->c_line[j];
+      }
+      j+= 2;
+   }
 
    printf("\n\n--------\n");
-   printf("Stage %d: \"%s\"\n", i, stg->c_line);
+   printf("Stage %d: \"%s\"\n", i, line);
    printf("--------\n");
-   printf("     input: %s\n", stg->input_line);
-   printf("    output: %s\n", stg->output_line);
+
+   if (stg->input_line == NULL) {
+      printf("     input: pipe from stage %d\n", i - 1);
+   }
+   else {
+      printf("     input: %s\n", stg->input_line);
+   }
+
+   if (stg->output_line == NULL) {
+      printf("    output: pipe to stage %d\n", i + 1);
+   }
+   else {
+      printf("    output: %s\n", stg->output_line);
+   }
+
    printf("      argc: %d\n", stg->num_args);
    printf("      argv: ");
 
