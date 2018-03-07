@@ -17,6 +17,7 @@ struct stage {
     char **arg_list;
 };
 
-stage_stats *createStage(char *input, char *output, int num_args, char *arg_list[]);
+stage_stats *createStage(char *input, char *output, int num_args,
+                         char *arg_list[]);
                 
 #endif

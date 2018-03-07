@@ -5,8 +5,10 @@
 #include <stdlib.h>
 #include "pline.h"
 
-void print(stage_stats **stats);
+#define MAX_COMMANDS 10
 
-void print_stats(int i, stage_stats *stg);
+void print(stage_stats **stats, char *buffer);
+
+void print_stats(int i, stage_stats *stg, char *line);
 
 #endif

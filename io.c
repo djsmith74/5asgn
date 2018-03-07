@@ -8,17 +8,26 @@ void get_input(char *input) {
 
    printf("line: ");
 
-   fgets(input, MAX_IN + 1, stdin);
- 
-   if (input[MAX_IN] != '\0') {
+   fgets(input, MAX_IN + 5, stdin);
+   if (strcmp(input, "\n") == 0) {
+       perror("empty file");
+       exit(EXIT_FAILURE);
+   }
+  
+   if (strlen(input) > MAX_IN) {
+       perror("command too long");
+       exit(EXIT_FAILURE);
+   }
+
+   /*if (input[MAX_IN + 1] != '\0') {
       printf("command too long\n");
       exit(EXIT_FAILURE);
-   }
+   }*/
 
    c = strlen(input);
    input[c - 1] = '\0';
 
-   printf("input: %s\n", input);
+   /*printf("input: %s\n", input);*/
 }
 
 
@@ -34,7 +43,7 @@ int divide_line(char *input, char **buffer) {
    /*walk through other tokens*/
    while (token != NULL) {
       buffer[i] = token;
-      printf("%d: %s\n", i, token);
+      /*printf("%d: %s\n", i, token);*/
       token = strtok(NULL, d);
       i++;
    }

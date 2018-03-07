@@ -1,29 +1,53 @@
 /*print.c: prints the necessary info given in the struct list*/
 #include "print.h"
 
-void print(stage_stats **stats) {
+void print(stage_stats **stats, char *buffer) {
    int i = 0;
+   char *token;
+  
+   /*printf("buffer: %s\n", buffer); */
+   token = strtok(buffer, "|");
 
-   while (stats[i] != NULL) {
-      print_stats(i, stats[i]);
+   while (stats[i] != NULL && i < MAX_COMMANDS && token != NULL) {
+      print_stats(i, stats[i], token);
+      /*printf("index: %d\n", i);
+      printf("stats[i]->num_args: %d\n", stats[i]->num_args);
+      printf("token: %s\n", token); 
+      printf("MAX_COMMANDS: %d\n", MAX_COMMANDS);*/
+      token = strtok(NULL, "|");
+      /*printf("token2: %s\n", token);*/
       i++;
    }
 }
 
-void print_stats(int i, stage_stats *stg) {
+void print_stats(int i, stage_stats *stg, char *line) {
    int k = 0;
-   int j = 0;
-   char *line;
+   /*int j = 0;
+   char *line = calloc(;
+   int mystg = 0;*/
 
-   while (j < i) {
-      if (!(*stg->c_line[j] == '|' || *stg->c_line[j] == '<' ||
-          *stg->c_line[j] == '>')) {
-         line = stg->c_line[j];
+   /*while (mystg < i) {
+      if (!(buffer[j][0] == '|')) {
+         j++;
       }
-      j+= 2;
+      else {
+         j++;
+         mystg++;
+      }
    }
 
-   printf("\n\n--------\n");
+   if (mystg != 0) {
+      strcat(line, " ");
+   }
+
+   while (!(buffer[j][0] != '|')) {
+      strcat(line, buffer[j];
+      j++
+   }
+
+   if (mystg
+*/
+   printf("\n--------\n");
    printf("Stage %d: \"%s\"\n", i, line);
    printf("--------\n");
 
