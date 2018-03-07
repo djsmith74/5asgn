@@ -179,6 +179,7 @@ int main (int argc, char *argv[]) {
                 exit(EXIT_FAILURE);
             }
             else {
+                if (stage_num 
                 stage_list[struct_index] = createStage(input, output, num_args, arguments);
                 found_pipe = 0;
 
@@ -195,6 +196,7 @@ int main (int argc, char *argv[]) {
                     printf("pipeline too deep\n");
                     exit(EXIT_FAILURE);
                 }
+
                 struct_index++;
             }
         }    
