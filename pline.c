@@ -79,4 +79,94 @@
  * Do we print each stage or at the end? if at the end, how do we keep all info 
  * 
  * What do we need to use the parsing for?
- * /
+ */
+
+int main () {
+    int s_num = 0;
+    
+    /* FLAGS */
+    int found_input;
+    int found_output;
+    int found_pipe;
+    int found_in_redir;
+    int found_out_redir;
+
+    /* VARIABLES */
+    int max;
+    int args_index;
+    int stage_num;
+    char *line;
+    char *input;
+    char *output;
+    int num_args;
+    char **arguments;
+    int j;
+
+    char stdin_line[] = "original stdin";
+    char stdout_line[] = "original stdout";
+
+    input = stdin_line;
+    output = stdout_line;
+     
+    /* while havent reached end */
+    while ( i < max ) {
+        if (found_input) {
+            if (strcmp(buffer[i], "<") == 0 || strcmp(buffer[i], ">") == 0 || strcmp(buffer[i], "|") == 0) {
+                printf("cmd: bad input redirection\n");
+                exit(EXIT_FAILURE);
+            }
+            else if (found_in_redir) {
+                printf("cmd: bad input redirection\n");
+                exit(EXIT_FAILURE);
+            }
+            else {
+                found_input = 0;
+                input = buffer[i];
+            }
+        } 
+        else if (found_output) {
+            if (strcmp(buffer[i], "<") == 0 || strcmp(buffer[i], ">") == 0 || strcmp(buffer[i], "|") == 0) {
+                printf("cmd: bad output redirection\n");
+                exit(EXIT_FAILURE);
+            }
+            else if (found_out_redir) {
+                printf("cmd: bad output redirection\n");
+                exit(EXIT_FAILURE);
+            }
+            else {
+                found_output = 0;
+                output = buffer[i];
+            }
+        }
+        else if (found_pipe) {
+            if (strcmp(buffer[i], "|") {
+                printf("invalid null command\n");
+                exit(EXIT_FAILURE);
+            }
+            else {
+                arguments[struct_index] = create_stage(stage_num, line, input, output, num_args, arg_list);
+                num_args = 0;
+                /* clear arg_list array */
+                for (j = 0; j < MAX_ARGS; j++) {
+                    arg_list[j] = '\0';
+                }
+                struct_index++;
+            }
+        }    
+        else {
+            arguments[args_index] = buffer[i];
+            args_index++;
+            num_args++;
+        }   
+    }
+}
+
+int printStage (int stage_num, char *line, char *input, char *output, int num_args, char *arg_list) {
+    printf("--------\n");
+    printf("Stage %d: \"%s\"\n", stage_num, line);
+    printf("--------\n");
+    printf("     input: \n");
+    printf("    output: \n");
+    printf("      argc: %d\n", num_args);
+    printf("      argv: \n");
+}

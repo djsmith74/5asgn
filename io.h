@@ -10,7 +10,7 @@
 
 void get_input(char *input);
 
-void divide_line(char *input, char **buffer);
+int divide_line(char *input, char **buffer);
 
 
 #endif
