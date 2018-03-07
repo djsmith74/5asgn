@@ -104,7 +104,7 @@ int main (int argc, char *argv[]) {
     char *output;
     char *tempi;
     char *tempo;
-    char *tempa[10] = {NULL};
+    char **tempa;
     int num_args;
     char *arguments[10] = {NULL};
     stage_stats *stage_list[10] = {NULL};
@@ -112,6 +112,7 @@ int main (int argc, char *argv[]) {
     int j;
     int k;
     int l;
+    int g;
     int struct_index;
 
     /* INITIATION */
@@ -121,8 +122,10 @@ int main (int argc, char *argv[]) {
     char in_line[513] = {0};
     char *buffer[512];
 
-    input = stdin_line;
-    output = stdout_line;
+    input = NULL;
+    output = NULL;
+    tempi = NULL;
+    tempo = NULL;
      
     found_input = 0; 
     found_output = 0;
@@ -185,39 +188,63 @@ int main (int argc, char *argv[]) {
                 exit(EXIT_FAILURE);
             }
             else {
-                if (pipe_num == 0 && input == NULL) {
+                /*if (pipe_num == 0 && input == NULL) {
                     input = stdin_line;
-                }
+                }*/
                 /*if (i == (max - 1) && output == NULL) {
                     output = stdout_line;
-                }
+                }*/
                 printf("YOO\n");
-                printf("input: %s\n", input);
+                /*printf("input: %s\n", input);
                 printf("output: %s\n", output);
                 printf("num_args: %d\n", num_args);
-                */
-                tempi = calloc(strlen(input), sizeof(char));
-                tempo = calloc(strlen(output), sizeof(char));
+                
+          
+                if ((tempi = calloc(strlen(input), sizeof(char))) == NULL) {
+                    printf("bas and sad\n");
+                }
+                if ((tempo = calloc(strlen(output), sizeof(char))) == NULL) {
+                    printf("sad and bad\n");
+                }*/
 
-                if (input != NULL) {
+                printf("here\n"); 
+                if (input == NULL) {
+                   tempi = NULL;
+                }
+                else {
+                   printf("input: %s\n", input);
+                   tempi = calloc(strlen(input), sizeof(char));
                    strcpy(tempi, input);
                 }
 
-                if (output != NULL) {
+                if (output == NULL) {
+                   tempo = NULL;
+                }
+                else { 
+                   tempo = calloc(strlen(output), sizeof(char));
                    strcpy(tempo, output);
                 }
+                printf("hereeeeee\n");
+                if ((tempa = calloc(10, sizeof(char*))) == NULL) {
+                    printf("HAHAHAHHAHAHAH\n");
+                }
 
-                stage_list[struct_index] = createStage(tempi, tempo, num_args, arguments);
+                for (g = 0; g < num_args; g++) { 
+                    tempa[g] = arguments[g];
+                }
+                printf("nope\n");
+                stage_list[struct_index] = createStage(tempi, tempo, num_args, tempa);
                 printf("NICE\n");
                 found_pipe = 0;
 
                 input = NULL;
                 output = NULL;
+                printf("input2: %s", input);
                 num_args = 0;
                 for (j = 0; j < MAX_ARGS; j++) {
                    arguments[j] = NULL;
                 }
-
+                args_index = 0;
                 pipe_num++;
 
                 if (pipe_num > 10) {
@@ -231,11 +258,11 @@ int main (int argc, char *argv[]) {
 
         /* SET FLAGS */
         if (strcmp(buffer[i], "<") == 0) {
-            /*printf("found <\n");*/
+            printf("found <\n");
             found_input = 1;
         }
         else if (strcmp(buffer[i], ">") == 0) {
-            /*printf("found >\n");*/
+            printf("found >\n");
             found_output = 1;
         }
         else if (strcmp(buffer[i], "|") == 0) {
@@ -243,7 +270,7 @@ int main (int argc, char *argv[]) {
             found_pipe = 1;
         }
         else if (found_input == 1 || found_output == 1) {
-            /*printf("found arg\n");*/
+            printf("found arg\n");
             found_arg = 0;
             found_input = 0;
             found_output = 0;
@@ -259,16 +286,28 @@ int main (int argc, char *argv[]) {
             args_index++;
             num_args++;
         }
-
+        printf("this\n");
         i++;
     }
     
-    if (input == NULL) {
+    if (input == NULL && pipe_num == 0) {
         input = stdin_line;
     }
     if (output == NULL) {
         output = stdout_line;
     }
+    printf("PWEEEZZ\n");
+    /*tempi = calloc(strlen(input), sizeof(char));
+    tempo = calloc(strlen(output), sizeof(char));
+ 
+    if (input != NULL) {
+        strcpy(tempi, input);
+    }
+
+    if (output != NULL) {
+        strcpy(tempo, output);
+    }*/
+    printf("stahp\n");
     stage_list[struct_index] = createStage(input, output, num_args, arguments);
 
     k = 0;
