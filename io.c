@@ -22,8 +22,8 @@ void get_input(char *input) {
 }
 
 
-/*cuts up the input string*/
-void divide_line(char *input, char **buffer) {
+/*cuts up the input string, and returns the number of words*/
+int divide_line(char *input, char **buffer) {
    char d[1] = {' '};
    char *token;
    int i = 0;
@@ -38,5 +38,5 @@ void divide_line(char *input, char **buffer) {
       token = strtok(NULL, d);
       i++;
    }
-
+   return i + 1;
 }
