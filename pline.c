@@ -102,6 +102,9 @@ int main (int argc, char *argv[]) {
     char *line;
     char *input;
     char *output;
+    char *tempi;
+    char *tempo;
+    char *tempa[10] = {NULL};
     int num_args;
     char *arguments[10] = {NULL};
     stage_stats *stage_list[10] = {NULL};
@@ -142,7 +145,7 @@ int main (int argc, char *argv[]) {
 
     while ( i < max ) {
         /* CHECK FLAGS */
-        /*printf("--------------\n");*/
+        printf("--------------\n");
         if (found_input) {
             if (strcmp(buffer[i], "<") == 0 || strcmp(buffer[i], ">") == 0 || strcmp(buffer[i], "|") == 0) {
                 printf("cmd: bad input redirection\n");
@@ -176,20 +179,43 @@ int main (int argc, char *argv[]) {
             }
         }
         else if (found_pipe) {
-            if (strcmp(buffer[i], "|")) {
+            printf("pipe was found\n");
+            if (strcmp(buffer[i], "|") == 0) {
                 printf("invalid null command\n");
                 exit(EXIT_FAILURE);
             }
             else {
-                /*if (stage_num */
-                stage_list[struct_index] = createStage(input, output, num_args, arguments);
+                if (pipe_num == 0 && input == NULL) {
+                    input = stdin_line;
+                }
+                /*if (i == (max - 1) && output == NULL) {
+                    output = stdout_line;
+                }
+                printf("YOO\n");
+                printf("input: %s\n", input);
+                printf("output: %s\n", output);
+                printf("num_args: %d\n", num_args);
+                */
+                tempi = calloc(strlen(input), sizeof(char));
+                tempo = calloc(strlen(output), sizeof(char));
+
+                if (input != NULL) {
+                   strcpy(tempi, input);
+                }
+
+                if (output != NULL) {
+                   strcpy(tempo, output);
+                }
+
+                stage_list[struct_index] = createStage(tempi, tempo, num_args, arguments);
+                printf("NICE\n");
                 found_pipe = 0;
 
-                input = stdin_line;
-                output = stdout_line;
+                input = NULL;
+                output = NULL;
                 num_args = 0;
                 for (j = 0; j < MAX_ARGS; j++) {
-                   arguments[j] = '\0';
+                   arguments[j] = NULL;
                 }
 
                 pipe_num++;
@@ -213,6 +239,7 @@ int main (int argc, char *argv[]) {
             found_output = 1;
         }
         else if (strcmp(buffer[i], "|") == 0) {
+            printf("found pipe!\n");
             found_pipe = 1;
         }
         else if (found_input == 1 || found_output == 1) {
