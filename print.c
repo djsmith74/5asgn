@@ -12,11 +12,19 @@ void print(stage_stats **stats) {
 
 void print_stats(int i, stage_stats *stg) {
    int k = 0;
+   int j = 0;
+   char *line;
 
-      
+   while (j < i) {
+      if (!(*stg->c_line[j] == '|' || *stg->c_line[j] == '<' ||
+          *stg->c_line[j] == '>')) {
+         line = stg->c_line[j];
+      }
+      j+= 2;
+   }
 
    printf("\n\n--------\n");
-   printf("Stage %d: \"%s\"\n", i, stg->c_line);
+   printf("Stage %d: \"%s\"\n", i, line);
    printf("--------\n");
 
    if (stg->input_line == NULL) {
