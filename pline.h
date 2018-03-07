@@ -4,6 +4,8 @@
 #include <string.h>
 
 #define MAX_ARGS 10
+#define MAX_LINE_LEN 512
+#define MAX_COMMANDS 10
 
 typedef struct stage stage_stats;
 
