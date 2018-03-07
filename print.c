@@ -2,17 +2,16 @@
 #include "print.h"
 
 void print(stage_stats **stats) {
-   stage_stats *stg;
    int i = 0;
 
    while (stats[i] != NULL) {
-      print_stats(i, stage_stats[i]);
+      print_stats(i, stats[i]);
       i++;
    }
 }
 
-void print_stats(int i, stage_stats stg) {
-   int i = 0;
+void print_stats(int i, stage_stats *stg) {
+   int k = 0;
 
    printf("\n\n--------\n");
    printf("Stage %d: \"%s\"\n", i, stg->c_line);
@@ -22,9 +21,9 @@ void print_stats(int i, stage_stats stg) {
    printf("      argc: %d\n", stg->num_args);
    printf("      argv: ");
 
-   for (; i < stg->num_args - 1; i++) {
-      printf("\"%s\",", stg->arg_list[i]);
+   for (; k < stg->num_args - 1; k++) {
+      printf("\"%s\",", stg->arg_list[k]);
    }
 
-   printf("\"%s\"\n", stg->arg_list[i]);
+   printf("\"%s\"\n", stg->arg_list[k]);
 }
