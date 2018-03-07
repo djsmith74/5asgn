@@ -80,7 +80,7 @@
  * 
  * What do we need to use the parsing for?
  */
-#include "io.c"
+#include "io.h"
 #include "pline.h"
 
 int main (int argc, char *argv[]) {
@@ -107,6 +107,8 @@ int main (int argc, char *argv[]) {
     stage_stats *stage_list[10] = {NULL};
     int i;
     int j;
+    int k;
+    int l;
     int struct_index;
 
     /* INITIATION */
@@ -179,7 +181,7 @@ int main (int argc, char *argv[]) {
                 exit(EXIT_FAILURE);
             }
             else {
-                if (stage_num 
+                /*if (stage_num */
                 stage_list[struct_index] = createStage(input, output, num_args, arguments);
                 found_pipe = 0;
 
@@ -232,6 +234,28 @@ int main (int argc, char *argv[]) {
         }
 
         i++;
+    }
+    
+    if (input == NULL) {
+        input = stdin_line;
+    }
+    if (output == NULL) {
+        output = stdout_line;
+    }
+    stage_list[struct_index] = createStage(input, output, num_args, arguments);
+
+    k = 0;
+    l = 0;
+    while (stage_list[k] != NULL) {
+        printf("--------------\n");
+        printf("Stage: %d\n", k);
+        printf("input: %s\n", stage_list[k]->input_line);
+        printf("output: %s\n", stage_list[k]->output_line);
+        printf("argc: %d\n", stage_list[k]->num_args);
+        for (l = 0; l < stage_list[k]->num_args; l++) {
+            printf("argument: %s\n", stage_list[k]->arg_list[l]);
+        }
+        k++;
     }
 } 
  
