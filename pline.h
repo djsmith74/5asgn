@@ -1,5 +1,5 @@
-#ifndef PLINE_C
-#define PLINE_C
+#ifndef PLINE_H
+#define PLINE_H
 
 #include <string.h>
 
