@@ -150,12 +150,16 @@ int main (int argc, char *argv[]) {
         /* CHECK FLAGS */
         printf("--------------\n");
         if (found_input) {
-            if (strcmp(buffer[i], "<") == 0 || strcmp(buffer[i], ">") == 0 || strcmp(buffer[i], "|") == 0) {
-                printf("cmd: bad input redirection\n");
+            if (pipe_num > 0) {
+                printf("%s: ambigious input\n", arguments[0]);
+                exit(EXIT_FAILURE);
+            }
+            else if (strcmp(buffer[i], "<") == 0 || strcmp(buffer[i], ">") == 0 || strcmp(buffer[i], "|") == 0) {
+                printf("%s: bad input redirection\n", arguments[0]);
                 exit(EXIT_FAILURE);
             }
             else if (found_in_redir) {
-                printf("cmd: bad input redirection\n");
+                printf("%s: bad input redirection\n", arguments[0]);
                 exit(EXIT_FAILURE);
             }
             else {
@@ -167,11 +171,11 @@ int main (int argc, char *argv[]) {
         }
         else if (found_output) {
             if (strcmp(buffer[i], "<") == 0 || strcmp(buffer[i], ">") == 0 || strcmp(buffer[i], "|") == 0) {
-                printf("cmd: bad output redirection\n");
+                printf("%s: bad output redirection\n", arguments[0]);
                 exit(EXIT_FAILURE);
             }
             else if (found_out_redir) {
-                printf("cmd: bad output redirection\n");
+                printf("%s: bad output redirection\n", arguments[0]);
                 exit(EXIT_FAILURE);
             }
             else {
@@ -185,6 +189,10 @@ int main (int argc, char *argv[]) {
             printf("pipe was found\n");
             if (strcmp(buffer[i], "|") == 0) {
                 printf("invalid null command\n");
+                exit(EXIT_FAILURE);
+            }
+            else if (found_out_redir == 1) {
+                printf("%s: ambigious output\n", arguments[0]);
                 exit(EXIT_FAILURE);
             }
             else {
@@ -285,6 +293,10 @@ int main (int argc, char *argv[]) {
             found_arg = 0;
             args_index++;
             num_args++;
+            if (num_args > 10) {
+                printf("%s: too many arguments\n", arguments[0]);
+                exit(EXIT_FAILURE);
+            }
         }
         printf("this\n");
         i++;

@@ -38,5 +38,5 @@ int divide_line(char *input, char **buffer) {
       token = strtok(NULL, d);
       i++;
    }
-   return i + 1;
+   return i;
 }
