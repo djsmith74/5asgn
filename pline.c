@@ -80,8 +80,10 @@
  * 
  * What do we need to use the parsing for?
  */
+#include "io.c"
+#include "pline.h"
 
-int main () {
+int main (int argc, char *argv[]) {
     int s_num = 0;
     
     /* FLAGS */
@@ -90,26 +92,55 @@ int main () {
     int found_pipe;
     int found_in_redir;
     int found_out_redir;
+    int found_arg;
 
     /* VARIABLES */
     int max;
     int args_index;
     int stage_num;
+    int pipe_num;
     char *line;
     char *input;
     char *output;
     int num_args;
-    char **arguments;
+    char *arguments[10];
+    stage_stats *stage_list[10];
+    int i;
     int j;
+    int struct_index;
 
+    /* INITIATION */
     char stdin_line[] = "original stdin";
     char stdout_line[] = "original stdout";
+
+    char in_line[513] = {0};
+    char *buffer[512];
 
     input = stdin_line;
     output = stdout_line;
      
-    /* while havent reached end */
+    found_input = 0; 
+    found_output = 0;
+    found_in_redir = 0;
+    found_out_redir = 0;
+    found_pipe = 0;
+    found_arg = 0;
+
+    struct_index = 0;
+    args_index = 0;
+    num_args = 0;
+    pipe_num = 0;
+ 
+    /* THE START! */
+    get_input(in_line);
+    max = divide_line(in_line, buffer);
+    printf("buffer size: %d\n", max);
+    
+    i = 0;   
+
     while ( i < max ) {
+        /* CHECK FLAGS */
+        /*printf("--------------\n");*/
         if (found_input) {
             if (strcmp(buffer[i], "<") == 0 || strcmp(buffer[i], ">") == 0 || strcmp(buffer[i], "|") == 0) {
                 printf("cmd: bad input redirection\n");
@@ -120,10 +151,12 @@ int main () {
                 exit(EXIT_FAILURE);
             }
             else {
-                found_input = 0;
                 input = buffer[i];
+                /*found_input = 0;*/
+                found_in_redir = 1;
+                printf("input filename: %s\n", input);
             }
-        } 
+        }
         else if (found_output) {
             if (strcmp(buffer[i], "<") == 0 || strcmp(buffer[i], ">") == 0 || strcmp(buffer[i], "|") == 0) {
                 printf("cmd: bad output redirection\n");
@@ -134,33 +167,83 @@ int main () {
                 exit(EXIT_FAILURE);
             }
             else {
-                found_output = 0;
                 output = buffer[i];
+                /*found_output = 0;*/
+                found_out_redir = 1;
+                printf("output filename: %s\n", output);
             }
         }
         else if (found_pipe) {
-            if (strcmp(buffer[i], "|") {
+            if (strcmp(buffer[i], "|")) {
                 printf("invalid null command\n");
                 exit(EXIT_FAILURE);
             }
             else {
-                arguments[struct_index] = create_stage(stage_num, line, input, output, num_args, arg_list);
+                stage_list[struct_index] = createStage(input, output, num_args, arguments);
+                found_pipe = 0;
+
+                input = stdin_line;
+                output = stdout_line;
                 num_args = 0;
-                /* clear arg_list array */
                 for (j = 0; j < MAX_ARGS; j++) {
-                    arg_list[j] = '\0';
+                   arguments[j] = '\0';
+                }
+
+                pipe_num++;
+
+                if (pipe_num > 10) {
+                    printf("pipeline too deep\n");
+                    exit(EXIT_FAILURE);
                 }
                 struct_index++;
             }
         }    
+
+        /* SET FLAGS */
+        if (strcmp(buffer[i], "<") == 0) {
+            /*printf("found <\n");*/
+            found_input = 1;
+        }
+        else if (strcmp(buffer[i], ">") == 0) {
+            /*printf("found >\n");*/
+            found_output = 1;
+        }
+        else if (strcmp(buffer[i], "|") == 0) {
+            found_pipe = 1;
+        }
+        else if (found_input == 1 || found_output == 1) {
+            /*printf("found arg\n");*/
+            found_arg = 0;
+            found_input = 0;
+            found_output = 0;
+        }
         else {
+            found_arg = 1;
+        }
+
+        if (found_arg) {
             arguments[args_index] = buffer[i];
+            printf("argument: %s\n", arguments[args_index]);
+            found_arg = 0;
             args_index++;
             num_args++;
-        }   
+        }
+
+        i++;
     }
+} 
+ 
+stage_stats *createStage(char *input, char *output, int num_args, char **arg_list) {
+    stage_stats *new_stage;
+    new_stage = calloc(1, sizeof(stage_stats));
+    new_stage->input_line = input;
+    new_stage->output_line = output;
+    new_stage->num_args = num_args;
+    new_stage->arg_list = arg_list;
+    return new_stage; 
 }
 
+/*
 int printStage (int stage_num, char *line, char *input, char *output, int num_args, char *arg_list) {
     printf("--------\n");
     printf("Stage %d: \"%s\"\n", stage_num, line);
@@ -169,4 +252,4 @@ int printStage (int stage_num, char *line, char *input, char *output, int num_ar
     printf("    output: \n");
     printf("      argc: %d\n", num_args);
     printf("      argv: \n");
-}
+}*/

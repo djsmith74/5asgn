@@ -1,15 +1,20 @@
 #ifndef PLINE_C
 #define PLINE_C
 
-typedef struct stage stage_stat
+#include <string.h>
+
+#define MAX_ARGS 10
+
+typedef struct stage stage_stats;
 
 struct stage {
-    int stage_num;
     char *c_line;
     char *input_line;
     char *output_line;
     int num_args;
-    char **arguments;
-}
+    const char *arg_list[];
+};
 
+stage_stats *createStage(char *input, char *output, int num_args, char *arg_list[]);
+                
 #endif
