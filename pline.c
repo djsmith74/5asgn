@@ -106,7 +106,6 @@ int main (int argc, char *argv[]) {
             }
         }
         else if (found_pipe) {
-            /*printf("pipe was found\n");*/
             if (strcmp(buffer[i], "|") == 0) {
                 perror("invalid null command");
                 exit(EXIT_FAILURE);

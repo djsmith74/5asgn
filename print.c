@@ -12,6 +12,7 @@ void print(stage_stats **stats, char *buffer) {
    while (stats[i] != NULL && i < MAX_COMMANDS && token != NULL) {
       print_stats(i, stats[i], token);
       token = strtok(NULL, "|");
+      free(stats[i]);
       i++;
    }
 }
@@ -47,4 +48,13 @@ void print_stats(int i, stage_stats *stg, char *line) {
    }
 
    printf("\"%s\"\n", stg->arg_list[k]);
+
+   /*free input string*/
+   free(stg->input_line);
+
+   /*free output string*/
+   free(stg->output_line);
+
+   /*free argument lists*/
+   free(stg->arg_list);
 }
