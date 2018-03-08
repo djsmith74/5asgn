@@ -1,7 +1,6 @@
 /*io.c: handles all i/o required for command line*/
 #include "io.h"
 
-
 /*returns a char pointer to the whole line input by the user*/
 void get_input(char *input) {
    int c;
@@ -21,10 +20,15 @@ void get_input(char *input) {
        exit(EXIT_FAILURE);
    }
 
+<<<<<<< HEAD
+   c = strlen(input);
+   input[c - 1] = '\0';
+=======
 
    c = strlen(input);
    input[c - 1] = '\0';
 
+>>>>>>> 253c12ad8d9bb12cf900753d860a902cfce851b9
 }
 
 
@@ -40,7 +44,6 @@ int divide_line(char *input, char **buffer) {
    /*walk through other tokens*/
    while (token != NULL) {
       buffer[i] = token;
-      /*printf("%d: %s\n", i, token);*/
       token = strtok(NULL, d);
       i++;
    }

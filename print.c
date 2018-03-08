@@ -4,8 +4,6 @@
 void print(stage_stats **stats, char *buffer) {
    int i = 0;
    char *token;
-  
-   /*printf("buffer: %s\n", buffer); */
    token = strtok(buffer, "|");
 
    /*get the proper line for each stage*/
@@ -21,7 +19,11 @@ void print(stage_stats **stats, char *buffer) {
 /*prints all of the information for a stage*/
 void print_stats(int i, stage_stats *stg, char *line) {
    int k = 0;
+<<<<<<< HEAD
+  
+=======
  
+>>>>>>> 253c12ad8d9bb12cf900753d860a902cfce851b9
    printf("\n--------\n");
    printf("Stage %d: \"%s\"\n", i, line);
    printf("--------\n");
