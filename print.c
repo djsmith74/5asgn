@@ -8,45 +8,19 @@ void print(stage_stats **stats, char *buffer) {
    /*printf("buffer: %s\n", buffer); */
    token = strtok(buffer, "|");
 
+   /*get the proper line for each stage*/
    while (stats[i] != NULL && i < MAX_COMMANDS && token != NULL) {
       print_stats(i, stats[i], token);
-      /*printf("index: %d\n", i);
-      printf("stats[i]->num_args: %d\n", stats[i]->num_args);
-      printf("token: %s\n", token); 
-      printf("MAX_COMMANDS: %d\n", MAX_COMMANDS);*/
       token = strtok(NULL, "|");
-      /*printf("token2: %s\n", token);*/
       i++;
    }
 }
 
+
+/*prints all of the information for a stage*/
 void print_stats(int i, stage_stats *stg, char *line) {
    int k = 0;
-   /*int j = 0;
-   char *line = calloc(;
-   int mystg = 0;*/
-
-   /*while (mystg < i) {
-      if (!(buffer[j][0] == '|')) {
-         j++;
-      }
-      else {
-         j++;
-         mystg++;
-      }
-   }
-
-   if (mystg != 0) {
-      strcat(line, " ");
-   }
-
-   while (!(buffer[j][0] != '|')) {
-      strcat(line, buffer[j];
-      j++
-   }
-
-   if (mystg
-*/
+ 
    printf("\n--------\n");
    printf("Stage %d: \"%s\"\n", i, line);
    printf("--------\n");

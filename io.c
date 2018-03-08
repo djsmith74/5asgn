@@ -8,26 +8,23 @@ void get_input(char *input) {
 
    printf("line: ");
 
+   /*get input from user*/
    fgets(input, MAX_IN + 5, stdin);
    if (strcmp(input, "\n") == 0) {
        perror("empty file");
        exit(EXIT_FAILURE);
    }
-  
+
+   /*check if more than 512 chars (bytes) were given*/  
    if (strlen(input) > MAX_IN) {
        perror("command too long");
        exit(EXIT_FAILURE);
    }
 
-   /*if (input[MAX_IN + 1] != '\0') {
-      printf("command too long\n");
-      exit(EXIT_FAILURE);
-   }*/
 
    c = strlen(input);
    input[c - 1] = '\0';
 
-   /*printf("input: %s\n", input);*/
 }
 
 
