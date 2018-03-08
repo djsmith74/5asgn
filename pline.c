@@ -37,6 +37,7 @@ int main (int argc, char *argv[]) {
     int k;
     int l;
     int g;
+    int f;
     int struct_index;
 
     /* INITIATION */
@@ -76,6 +77,7 @@ int main (int argc, char *argv[]) {
 
     while ( i < max ) {
         /* CHECK FLAGS */
+        /* Checks if an input redirection was found */
         if (found_input) {
             if (pipe_num > 0) {
                 found_amb_in = 1;
@@ -92,6 +94,7 @@ int main (int argc, char *argv[]) {
                 found_in_redir = 1;
             }
         }
+        /* Checks if an output redirection was found */
         else if (found_output) {
             if (strcmp(buffer[i], "<") == 0 || strcmp(buffer[i], ">") == 0 ||
                 strcmp(buffer[i], "|") == 0) {
@@ -105,6 +108,7 @@ int main (int argc, char *argv[]) {
                 found_out_redir = 1;
             }
         }
+        /* Checks if pipe was found */
         else if (found_pipe) {
             if (strcmp(buffer[i], "|") == 0) {
                 perror("invalid null command");
@@ -146,8 +150,9 @@ int main (int argc, char *argv[]) {
                 }
                 stage_list[struct_index] = createStage(tempi, tempo, num_args,
                                                        tempa);
+                
+                /* Clear all values */
                 found_pipe = 0;
-
                 input = NULL;
                 output = NULL;
                 num_args = 0;
@@ -155,6 +160,7 @@ int main (int argc, char *argv[]) {
                    arguments[j] = NULL;
                 }
                 args_index = 0;
+
                 pipe_num++;
                 struct_index++;
             }
@@ -178,7 +184,8 @@ int main (int argc, char *argv[]) {
         else {
             found_arg = 1;
         }
-
+    
+        /* Checks if an argument is found */
         if (found_arg) {
             arguments[args_index] = buffer[i];
             found_arg = 0;
@@ -191,6 +198,7 @@ int main (int argc, char *argv[]) {
             }
         }
  
+        /* Checks if flags for errors have been raised */
         if (arguments[0] != NULL) {
             if (found_amb_in == 1) {
                 printf("%s: ambigious input\n", arguments[0]);
@@ -221,8 +229,10 @@ int main (int argc, char *argv[]) {
         perror("empty");
         exit(EXIT_FAILURE);
     }
+
     stage_list[struct_index] = createStage(input, output, num_args, arguments);
 
+    /* Checking for too many commands in the pipeline */
     if (pipe_num > 0) {
         pipe_num++;
         if (pipe_num > MAX_COMMANDS) {
@@ -232,8 +242,25 @@ int main (int argc, char *argv[]) {
     }
     
     print(stage_list, new_buff);    
+
+    /* FREE MEMORY */
+    /*for (f = 0; f <= struct_index; f++) {
+        if (stage_list[f]->input_line != NULL && 
+            strcmp(stage_list[f]->input_line, stdin_line) != 0) {
+            free(stage_list[f]->input_line);
+        }
+        if (stage_list[f]->output_line != NULL &&
+            strcmp(stage_list[f]->output_line, stdout_line) != 0) {
+            free(stage_list[f]->output_line);
+        }
+        if (f != struct_index) {
+            free(stage_list[f]->arg_list);
+        }
+        free(stage_list[f]);
+    }*/
 } 
  
+/* Creates a stage_stats struct */
 stage_stats *createStage(char *input, char *output, int num_args,
                          char **arg_list) {
     stage_stats *new_stage;
